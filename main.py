@@ -11,6 +11,7 @@ from sklearn.ensemble import RandomForestClassifier
 import utils
 
 parser = argparse.ArgumentParser()
+parser.add_argument('-dp', '--data_path', help='Path to .csv file')
 parser.add_argument('-lv', '--lag_variables', action='store_true', help='Create a lag version of two time steps for each variable')
 parser.add_argument('-nv', '--no_verbose', action='store_true', help='No verbose for results')
 parser.add_argument('-sr', '--save_results', action='store_true', help='Save results in a txt file')
@@ -18,13 +19,14 @@ parser.add_argument('-sm', '--save_models', action='store_true', help='Save trai
 parser.add_argument('-fi', '--feature_importances', action='store_true', help='Extract feature importances from random forest')
 
 args = parser.parse_args()
+data_path = args.data_path
 is_lag = args.lag_variables
 is_verbose = not args.no_verbose
 save_results = args.save_results
 save_models = args.save_models
 feature_importances = args.feature_importances
 
-data = pd.read_csv('vulnerable_robot_challenge.csv')
+data = pd.read_csv(data_path)
 
 data, features = utils.construct_features(data, is_lag)
 print(data.columns[features])
