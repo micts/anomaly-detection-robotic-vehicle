@@ -3,7 +3,6 @@ import time
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn import preprocessing
 from sklearn.ensemble import IsolationForest
 from sklearn.svm import OneClassSVM
 from sklearn.ensemble import RandomForestClassifier
@@ -11,7 +10,7 @@ from sklearn.ensemble import RandomForestClassifier
 import utils
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-dp', '--data_path', help='Path to .csv file')
+parser.add_argument('-p', '--path', help='Path to .csv file')
 parser.add_argument('-lv', '--lag_variables', action='store_true', help='Create a lag version of two time steps for each variable')
 parser.add_argument('-nv', '--no_verbose', action='store_true', help='No verbose for results')
 parser.add_argument('-sr', '--save_results', action='store_true', help='Save results in a txt file')
@@ -19,6 +18,7 @@ parser.add_argument('-sm', '--save_models', action='store_true', help='Save trai
 parser.add_argument('-fi', '--feature_importances', action='store_true', help='Extract feature importances from random forest')
 
 args = parser.parse_args()
+
 data_path = args.data_path
 is_lag = args.lag_variables
 is_verbose = not args.no_verbose
@@ -27,38 +27,18 @@ save_models = args.save_models
 feature_importances = args.feature_importances
 
 data = pd.read_csv(data_path)
+data = utils.construct_features(data, is_lag)
 
-data, features = utils.construct_features(data, is_lag)
+if is_lag:
+    features = np.r_[1, 2, 3, 4, 7, 8, 10:20, 24:32]
+else:
+    features = np.r_[1, 2, 3, 4, 7, 8, 10, 11]
+
 print(data.columns[features])
-x_train, x_test, y_train, y_test = train_test_split(data.iloc[:, features], # 26
+x_train, x_test, y_train, y_test = train_test_split(data.iloc[:, features],
                                                     data.iloc[:, 9],
                                                     test_size=0.33,
-                                                    random_state=151) # 42
-
-
-
-
-# if lag_variables:
-#     data['Volts'] = data['Watts'] / data['Amps']
-#     data['R/T(xKBTot)'] = (data['RxKBTot'] + 1) / (data['TxKBTot'] + 1)
-#     data = utils.create_lag_variables(data)
-#     print(data.columns[pd.np.r_[1, 2, 3, 4, 7, 8, 10:20, 24:32]])
-#     x_train, x_test, y_train, y_test = train_test_split(data.iloc[:, pd.np.r_[1, 2, 3, 4, 7, 8, 10:20, 24:32]], # 26
-#                                                         data.iloc[:, 9],
-#                                                         test_size=0.33,
-#                                                         random_state=151) # 42
-#     #print(data.columns)
-# else:
-#     data['Volts'] = data['Watts'] / data['Amps']
-#     #data['RxKBTot'] = np.log(data['RxKBTot'] + 1)
-#     #data['TxKBTot'] = np.log(data['TxKBTot'] + 1)
-#     data['R/T(xKBTot)'] = (data['RxKBTot'] + 1) / (data['TxKBTot'] + 1)
-#     #data['R/T(xKBTot)'] = np.log(data['RxKBTot'] + 1) - np.log(data['TxKBTot'] + 1)
-#     print(data.columns[[1, 2, 3, 4, 7, 8, 10, 11]])
-#     x_train, x_test, y_train, y_test = train_test_split(data.iloc[:, [1, 2, 3, 4, 7, 8, 10, 11]], # 1:9
-#                                                         data.iloc[:, 9],
-#                                                         test_size=0.33,
-#                                                         random_state=151)
+                                                    random_state=151)
 
 x_train, x_test = utils.scale_data(x_train, x_test)
 x_train_ = np.copy(x_train)
@@ -66,16 +46,16 @@ y_train_ = np.copy(y_train)
 
 models = [
     ('Isolation Forest (Unsupervised)', IsolationForest(n_estimators=1000,
-                                          contamination=.5,
-                                          max_features=1,
-                                          max_samples=1000,
-                                          random_state=0)),
+                                                        contamination=.5,
+                                                        max_features=1,
+                                                        max_samples=1000,
+                                                        random_state=0)),
     ('One-Class SVM (Semi-Supervised)', OneClassSVM(kernel='linear',
                                                     nu=0.2)),
     ('Random Forest (Supervised)', RandomForestClassifier(n_estimators=1000,
-                                                    max_features=1,
-                                                    max_samples=1000,
-                                                    random_state=0))]
+                                                          max_features=1,
+                                                          max_samples=1000,
+                                                          random_state=0))]
 
 results = {}
 for name, model in models:
@@ -85,7 +65,6 @@ for name, model in models:
 
     print('\n', name, 10 * '-', sep='\n')
     if name == 'One-Class SVM (Semi-Supervised)':
-
         print('Labeling training set based on top-k unsupervised predictions from \'Normal\' class...')
         time.sleep(2)
         inds = utils.get_train_inds(y_score_train, y_pred_train, labels=[0])
@@ -94,9 +73,7 @@ for name, model in models:
         # training set comprised of top-k scored examples from "normal" class
         x_train = x_train[inds, :]
         y_train = y_train[inds]
-
     elif name == 'Random Forest (Supervised)':
-
         print('Labeling training set based on top-k unsupervised predictions from both classes...')
         time.sleep(2)
         y_score_train = np.copy(y_score_train_)

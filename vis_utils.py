@@ -5,10 +5,10 @@ def plot_data(data):
     """
         Plot all dataset variables against time ('t'), i.e. as time series.
 
-        Parameters
-        ----------
-        data : pandas.DataFrame
-            Dataset as a pandas dataframe.
+        # Parameters
+        # ----------
+        # data : pandas.DataFrame
+        #     Dataset as a pandas dataframe.
         """
 
     subset_ind = [2390, 5504]
@@ -46,6 +46,11 @@ def plot_data(data):
 
 
 def plot_feature_importances(f_fi, is_lag):
+
+    """
+    Plot feature importances produced by random forest, in descending order of importance.
+    """
+
     plt.figure(figsize=(12, 8))
     f = [i[0] for i in f_fi]
     fi = [i[1] for i in f_fi]

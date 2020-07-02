@@ -13,19 +13,25 @@ def relabel_pred(pred):
     1 --> 0
     -1 --> 1
 
-    Parameters
-    ----------
-    pred : 1d numpy array
-        Predictions in {1, -1}
+    # Parameters
+    # ----------
+    # pred : 1d numpy array
+    #     Predictions in {1, -1}
     """
     return ((-0.5) * (pred - 1)).astype(np.int)
 
 def get_train_inds(scores, pred, labels=[0, 1]):
 
+    """
+    Returns training set indices of top-k "normal" (0) or "anomalous" (1) predictions produced by the unsupervised model.
+    The returned instances are labeled (based on the prediction) to train the semi-supervised and supervised model.
+    """
+
     # index scores
     inds = np.arange(len(scores))
     scores = np.stack((scores, inds)).T
 
+    # for both semi-supervised and supervised case
     normal_obs = scores[pred == 0, :] # predicted as "normal"
     normal_obs_ordered = normal_obs[normal_obs[:, 0].argsort()[::-1]] # sort w.r.t score
     topk_normal_obs = normal_obs_ordered[:1670] # extract top k # 1650
@@ -41,6 +47,10 @@ def get_train_inds(scores, pred, labels=[0, 1]):
     return inds_to_keep
 
 def create_lag_variables(data):
+    """
+    Creates lag versions of two time steps (t-1, t-2) for each feature in the dataset.
+    """
+
     for n_column in range(1, len(data.columns)):
         column = data.columns[n_column]
         if column == 'flag':
@@ -50,23 +60,32 @@ def create_lag_variables(data):
     return data.iloc[2:]
 
 def construct_features(data, is_lag):
-    data['Volts'] = data['Watts'] / data['Amps']
-    data['R/T(xKBTot)'] = (data['RxKBTot'] + 1) / (data['TxKBTot'] + 1)
+    """
+    Constructs two new features and lag versions for each feature.
+    """
+    data['Volts'] = data['Watts'] / data['Amps'] # Interaction between Watts and Amps, as Volts = Watts / Amps
+    data['R/T(xKBTot)'] = (data['RxKBTot'] + 1) / (data['TxKBTot'] + 1) # Ratio of received to transmitted network traffic rate
     if is_lag:
         data = create_lag_variables(data)
-        features = pd.np.r_[1, 2, 3, 4, 7, 8, 10:20, 24:32]
-    else:
-        features = pd.np.r_[1, 2, 3, 4, 7, 8, 10, 11]
-    return data, features
+    return data
 
 def scale_data(x_train, x_test):
+    """
+    Scale data to zero mean and unit variance.
+    """
+
     standard_scaler = StandardScaler()
     x_train = standard_scaler.fit_transform(x_train)
     x_test = standard_scaler.transform(x_test)
     return x_train, x_test
 
 def model_evaluation(name, y_true, y_pred, y_score):
-
+    """
+    Evaluate model w.r.t. 1) Recall
+                          2) Precision
+                          3) Area under the Receiver Operation Characteristic (ROC) curve - AUROC
+                          4) Area under the Precision-Recall curve (Average Precision) - AP
+    """
     recall = recall_score(y_true, y_pred, pos_label=1)
     precision = precision_score(y_true, y_pred, pos_label=1)
 
@@ -80,8 +99,10 @@ def model_evaluation(name, y_true, y_pred, y_score):
     return recall, precision, roc_auc, ap_auc
 
 def extract_feature_importances(model, features):
+    """
+    Extract feature importances produced by random forest, and sort the in descending order.
+    """
     features = features.tolist()
-    print('ddd:', features)
     f_fi = [(feature, model.feature_importances_[idx]) for idx, feature in enumerate(features)]
     f_fi.sort(key = lambda x: x[1], reverse=True)
     return f_fi
