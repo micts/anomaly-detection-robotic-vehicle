@@ -19,7 +19,7 @@ $ git clone https://github.com/micts/anomaly-detection-robotic-vehicle.git
 ```
 
 #### Task 2
-We deploy the trained models as a REST API using Docker and Flask. To do that, we first build a docker image from the Dockerfile using `$ docker build -t <name_for_image>:<tag> .` For example, 
+We deploy the trained models as a REST API using Docker and Flask. First, we build a docker image from the Dockerfile using `$ docker build -t <name_for_image>:<tag> .` For example, 
 ```
 $ docker build -t ad_image_test:v1 .`    
 ```    
