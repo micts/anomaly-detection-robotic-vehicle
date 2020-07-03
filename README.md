@@ -10,7 +10,7 @@ Although it is an unsupervised classification task, it is possible to approach i
 2) Semi-supervised: We label the top-k confident examples predicted as "Normal" from the unsupervised model. Then, we train a novelty detection (semi-supervised) algorithm, namely, One-Class SVM, on this noisy training set in order to learn the distribution of the "Normal" class. For a new (unseen) example, the model predicts whether it is generated from the training distribution or not, i.e. classifies the example as "Normal" or "Anomaly".
 3) Supervised: This is similar to 2), but we obtain the top-k confident examples from both classes ("Normal" and "Anomaly"). Finally, we train a supervised model, such as a Random Forest, on the fully labeled training set.    
 
-### Models
+## Models
 We train the following models: Isolation Forest (unsupervised), One-Class SVM (semi-supervised), and Random Forest (supervised). Additionally, we employ two variants of these models.    
 
 1) Using only time step `t` for each variable, i.e. no temporal information. For example, using variables `X1(t)`, `X2(t)`.
