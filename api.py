@@ -7,6 +7,8 @@ from flask_restful import Resource, Api, reqparse
 from joblib import load
 import numpy as np
 
+import utils
+
 parser = argparse.ArgumentParser()
 parser.add_argument('-mn', '--model_name', help='Model to perform inference with. Possible values are \'isolation_forest\', \'one-class_svm\', \'random_forest\'.')
 parser.add_argument('-lv', '--lag_variables', action='store_true', help='Whether to include lag variables in the model.')
@@ -21,13 +23,11 @@ assert model_name == 'isolation_forest' or \
        'Please provide a valid model name. Possible values are \'isolation_forest\', \'one-class_svm\', \'random_forest\'.'
 
 if is_lag:
-    model_name = model_name + '_lag'
-    transform_name = 'transform_lag'
+    model_dir = 'models/' + model_name + '_lag' + '.pkl'
+    transform_dir = 'transforms/transform_lag.pkl'
 else:
-    transform_name = 'transform'
-
-model_dir = 'models/' + model_name + '.pkl'
-transform_dir = 'transforms/' + transform_name + '.pkl'
+    model_dir = 'models/' + model_name + '.pkl'
+    transform_dir = 'transforms/transform.pkl'
 
 print('\n', 'Loading model from', model_dir)
 with open(model_dir, 'rb') as f:
@@ -62,11 +62,13 @@ class Prediction(Resource):
         x = np.array([args[f] for f in features]).reshape(1, -1)
         x = scaler.transform(x)
         y_pred = model.predict(x)
-        if y_pred == -1:
-            y = 'Normal (0)'
+        if model_name == 'isolation_forest' or model_name == 'one-class_svm':
+            y_pred = utils.relabel_pred(y_pred)
+        if y_pred == 0:
+            prediction = 'Normal (0)'
         elif y_pred == 1:
-            y = 'Anomaly (1)'
-        return {'Prediction': y}
+            prediction = 'Anomaly (1)'
+        return {'Prediction': prediction}
 
 api.add_resource(Prediction, '/predict')
 
