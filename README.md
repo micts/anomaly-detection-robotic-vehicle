@@ -19,8 +19,7 @@ $ git clone https://github.com/micts/anomaly-detection-robotic-vehicle.git
 ```
 
 #### Task 2
-We deploy the trained models as a REST API using Docker and Flask. 
-Build a docker image from the Dockerfile
+We deploy the trained models as a REST API using Docker and Flask. Build a docker image from the Dockerfile
 ```
 $ docker build -t <name_for_image>:<tag> .
 ```
@@ -28,9 +27,7 @@ For example,
 ```
 $ docker build -t ad_image_test:v1 .
 ```
-The above command will install all required dependencies. Additionally, by building the image, we train the classification models. These models will be saved and made available in every container initialized from the built image.   
-
-To run the server, we use
+The above command will install all required dependencies. Additionally, by building the image, we train the classification models. These models will be saved and made available in every container initialized from the built image. To run the server, we use
 ```
 $ docker run -it -p 5000:5000 ad_image_test:v1 python3 api.py -mn model_name
 ```
@@ -42,7 +39,7 @@ For example, we run the server and perform inference using the trained Random Fo
 ```
 $ docker run -it -p 5000:5000 ad_image_test:v1 python3 api.py -mn random_forest -lv
 ```
-We can issue a request by running the shell script `request_lag_models.sh` for models with lagged variables or `request.sh` for models with no lagged variables.  By running the following command, our model should output its prediction, either "Normal" - (0) or "Anomaly" - (1)
+We can issue a request by running the shell script `request_lag_models.sh` for models with lagged variables or `request.sh` for models with no lagged variables. By running the following command, our model should output its prediction, either "Normal" - (0) or "Anomaly" - (1)
 ```
 ./request_lag_models.sh
 ```
