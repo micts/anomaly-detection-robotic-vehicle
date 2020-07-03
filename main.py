@@ -35,7 +35,6 @@ else:
     features = np.r_[1, 2, 3, 4, 7, 8, 10, 11]
 
 print(data.columns[features])
-print(data.iloc[50, features])
 x_train, x_test, y_train, y_test = train_test_split(data.iloc[:, features],
                                                     data.iloc[:, 9],
                                                     test_size=0.33,
@@ -141,10 +140,8 @@ if is_verbose:
     time.sleep(1)
     utils.print_results(results)
 
-if feature_importances:
+if feature_importances and is_verbose:
     print('\n\n')
     print('Ordered feature importances (Random Forest)', 8 * '-', sep='\n')
     utils.print_feature_importances(f_fi)
     utils.save_feature_importances(f_fi, is_lag)
-
-print(features)
