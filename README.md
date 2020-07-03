@@ -19,21 +19,15 @@ $ git clone https://github.com/micts/anomaly-detection-robotic-vehicle.git
 ```
 
 #### Task 2
-We deploy the trained models as a REST API using Docker and Flask. Build a docker image from the Dockerfile
+We deploy the trained models as a REST API using Docker and Flask. To do that, we first build a docker image from the Dockerfile using `$ docker build -t <name_for_image>:<tag> .` For example, 
 ```
-$ docker build -t <name_for_image>:<tag> .
-```
-For example, `$ docker build -t ad_image_test:v1 .`    
-
+$ docker build -t ad_image_test:v1 .`    
+```    
 The above command will install all required dependencies. Additionally, while building the image, we train the classification models. These models will be saved and made available in every container initialized from the built image. To run the server, we use
 ```
 $ docker run -it -p 5000:5000 ad_image_test:v1 python3 api.py -mn model_name
 ```
-where we subsitute `model_name` with one of the following: `isolation_forest` (unsupervised), `one-class_svm` (semi-supervised), or `random_forest` (supervised). It is also possible to train these models using additional lagged variables by specifying the `-lv` option
-```
-$ docker run -it -p 5000:5000 ad_image_test:v1 python3 api.py -mn model_name -lv
-```
-For example, we run the server and perform inference using the trained Random Forest model with lagged variables 
+where we subsitute `model_name` with one of the following: `isolation_forest` (unsupervised), `one-class_svm` (semi-supervised), or `random_forest` (supervised). It is also possible to train these models using additional lagged variables by specifying the `-lv` option. For instance, we run the server in order to perform inference using the trained Random Forest model with lagged variables
 ```
 $ docker run -it -p 5000:5000 ad_image_test:v1 python3 api.py -mn random_forest -lv
 ```
