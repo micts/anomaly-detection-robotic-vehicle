@@ -77,7 +77,7 @@ def scale_data(x_train, x_test):
     standard_scaler = StandardScaler()
     x_train = standard_scaler.fit_transform(x_train)
     x_test = standard_scaler.transform(x_test)
-    return x_train, x_test
+    return x_train, x_test, standard_scaler
 
 def model_evaluation(name, y_true, y_pred, y_score):
     """
@@ -146,6 +146,16 @@ def save_model(model, model_name, is_lag):
         os.mkdir('models/')
     with open('models/' + model_name + '.pkl', 'wb') as f:
         pickle.dump(model, f)
+
+def save_transform(scaler, is_lag):
+    if is_lag:
+        transform_name = 'transform' + '_lag'
+    else:
+        transform_name = 'transform'
+    if not os.path.exists('transforms/'):
+        os.mkdir('transforms/')
+    with open('transforms/' + transform_name + '.pkl', 'wb') as f:
+        pickle.dump(scaler, f)
 
 def save_results(results, is_lag):
     if not os.path.exists('results/'):

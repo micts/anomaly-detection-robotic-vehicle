@@ -19,7 +19,7 @@ parser.add_argument('-fi', '--feature_importances', action='store_true', help='E
 
 args = parser.parse_args()
 
-data_path = args.data_path
+data_path = args.path
 is_lag = args.lag_variables
 is_verbose = not args.no_verbose
 save_results = args.save_results
@@ -35,12 +35,16 @@ else:
     features = np.r_[1, 2, 3, 4, 7, 8, 10, 11]
 
 print(data.columns[features])
+print(data.iloc[50, features])
 x_train, x_test, y_train, y_test = train_test_split(data.iloc[:, features],
                                                     data.iloc[:, 9],
                                                     test_size=0.33,
                                                     random_state=151)
 
-x_train, x_test = utils.scale_data(x_train, x_test)
+x_train, x_test, standard_scaler = utils.scale_data(x_train, x_test)
+if save_models:
+    utils.save_transform(standard_scaler, is_lag)
+
 x_train_ = np.copy(x_train)
 y_train_ = np.copy(y_train)
 
