@@ -33,6 +33,11 @@ We evaluate the models using the following metrics
 
 ## Results
 
+Training set and test set results are shown in the following tables. Results for models with lagged variables are included in parentheses. We observe that test set performance increases by increasing model supervision during training. Namely, Random Forest outperforms both One-Class SVM and Isolation Forest across all metrics, and One-Class SVM outperforms Isolation Forest across most metrics. Finally, the addition of lagged variables increases performance further, particularly for Isolation Forest and Random Forest. This is expected, since forest models usually perform well on high-dimensional data.  
+
+![Screenshot](table_results/training_set_results.png)
+![Screenshot](table_results/test_set_results.png)
+
 ## How to Use
 
 ### Requirements   
