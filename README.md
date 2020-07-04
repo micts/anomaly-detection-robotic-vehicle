@@ -22,14 +22,46 @@ We construct two new features
 2) `R/T(xKBTot)` = (`RxKBTot` + 1) / (`TxKBTot` + 1) to model the ratio between received and transmitted network traffic rate.
 
 ### Feature Transformation    
-All features are scaled to zero mean and unit variance.
+All features are scaled to have zero mean and unit variance.
 
-### How to Use
+## Evaluation
+We evaluate the models using the following metrics
+1) Recall
+2) Precision
+3) Area under the Receiver Operating Characteristic (ROC) curve - AUROC
+4) Area under the Precision-Recall curve (Average Precision) - AP
+
+## Results
+
+## How to Use
+
+### Requirements   
+`Python 3.x`. For packages, see `requirements.txt`.
+
 
 Clone or download this repository.
 ```
 $ git clone https://github.com/micts/anomaly-detection-robotic-vehicle.git
 ```
+
+### Model Training and Evaluation
+We run `main.py` to train and evalute the models. 
+```
+python main.py -p <path_to_csv_file>
+```
+There a few optional input arguments we can specify.     
+`-lv`, `--lag_variables`,  Create a lag version of two time steps for each variable.    
+`-nv`, `--no_verbose`,    No verbose does not print evaluation results.    
+`-sr`, `--save_results`,  Save results in a pickle file.     
+`-sm`, `--save_models`,   Save models and transformations.    
+`-fi`, `--feature_importances`, Plot and save feature importances from random forest model.    
+  
+For help, type
+```
+python main.py -h <or> --help
+```
+
+
 
 #### Task 2
 We deploy the trained models as a REST API using Docker and Flask. First, we build a docker image from the Dockerfile using `$ docker build -t <name_for_image>:<tag> .` For example, 
