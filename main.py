@@ -13,9 +13,9 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-p', '--path', help='Path to .csv file')
 parser.add_argument('-lv', '--lag_variables', action='store_true', help='Create a lag version of two time steps for each variable')
 parser.add_argument('-nv', '--no_verbose', action='store_true', help='No verbose for results')
-parser.add_argument('-sr', '--save_results', action='store_true', help='Save results in a txt file')
+parser.add_argument('-sr', '--save_results', action='store_true', help='Save results in a pickle file')
 parser.add_argument('-sm', '--save_models', action='store_true', help='Save trained models')
-parser.add_argument('-fi', '--feature_importances', action='store_true', help='Extract feature importances from random forest')
+parser.add_argument('-fi', '--feature_importances', action='store_true', help='Plot and save feature importances from random forest')
 
 args = parser.parse_args()
 
