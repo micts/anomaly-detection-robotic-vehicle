@@ -58,10 +58,10 @@ There a few optional input arguments we can specify.
   
 For help, type
 ```
-python main.py -h <or> --help
-```
-
-
+python main.py -h <or> --help    
+```   
+ 
+Results are save under `results/`. Trained models and transformations are saved under `models/`. Finally, feature importances are plotted and saved in a pickle file under `feature_importances/`.
 
 #### Task 2
 We deploy the trained models as a REST API using Docker and Flask. First, we build a docker image from the Dockerfile using `$ docker build -t <name_for_image>:<tag> .` For example, 
