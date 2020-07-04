@@ -88,11 +88,11 @@ $ docker build -t my_image_api:v1 .`
 ```    
 The above command will install all required dependencies. As described above, by building the image, `main.py` will be executed in order to train and save the models. Saved models and feature transformations will be available to all containers initialized by the built image, so that we access them througth the API.  
 
-To run the web server, we use
+To run the web server
 ```
 $ docker run -it -p 5000:5000 my_image_api:v1 python3 api.py -mn model_name
 ```
-where we subsitute `model_name` with one of the following: `isolation_forest` (unsupervised), `one-class_svm` (semi-supervised), or `random_forest` (supervised). We can also use the optional input argument `-lv` to specify that we want to perform inference using a model with lagged variables. For instance, we run the server in order to perform inference using the trained Random Forest model with lagged variables
+where we subsitute `model_name` with one of the following: `isolation_forest` (unsupervised), `one-class_svm` (semi-supervised), or `random_forest` (supervised). We can also use the optional input argument `-lv` to specify that we want to perform inference using a model with lagged variables. For instance, run the server to perform inference using the trained Random Forest model with lagged variables
 ```
 $ docker run -it -p 5000:5000 ad_image_test:v1 python3 api.py -mn random_forest -lv
 ```
@@ -105,4 +105,6 @@ or
 ```
 $ requests/request.sh
 ```
-for a model without lagged variables. The API should output the model's prediction, 0 - Normal or 1 - Anomaly, in JSON format.
+for a model without lagged variables. 
+
+The API should output the model's prediction, 0 - Normal or 1 - Anomaly, in JSON format.
