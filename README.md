@@ -69,7 +69,7 @@ python main.py -h <or> --help
 Results are save under `results/`. Trained models and transformations are saved under `models/`. Finally, feature importances are plotted and saved in a pickle file under `feature_importances/`.
 
 #### Using Docker
-In order to train and evaluate the models using Docker, we build a Docker image that contains all required packages (see `requirements.txt`). While building the image, we run `main.py`. This ensures that 1) the models are trained and evaluated in an isolated environment (container) and 2) the results (e.g. saved models and transformations) will be available to all containers initialized from the built image. This will be useful later when we serve our models as a REST API within Docker.
+In order to train and evaluate the models using Docker, we build a Docker image that contains all required packages (see `requirements.txt`). By building the image, we run `main.py`. This ensures that 1) the models are trained and evaluated in an isolated environment (container) and 2) the results (e.g. saved models and feature transformations) will be available to all containers initialized from the built image. This will be useful later when we serve our models as a REST API within Docker.
 
 To train and evaluate the models using Docker, type
 ```
@@ -81,16 +81,28 @@ $ docker build -t my_image:v1 .
 ```
 The input arguments to `main.py` can be modified in the Dockerfile.    
 
-#### Task 2
+### REST API
 We deploy the trained models as a REST API using Docker and Flask. First, we build a docker image from the Dockerfile using `$ docker build -t <name_for_image>:<tag> .` For example, 
 ```
-$ docker build -t ad_image_test:v1 .`    
+$ docker build -t my_image_api:v1 .`    
 ```    
-The above command will install all required dependencies. Additionally, while building the image, we train the classification models. These models will be saved and made available in every container initialized from the built image. To run the server, we use
+The above command will install all required dependencies. As described above, by building the image, `main.py` will be executed in order to train and save the models. Saved models and feature transformations will be available to all containers initialized by the built image, so that we access them througth the API.  
+
+To run the web server, we use
 ```
-$ docker run -it -p 5000:5000 ad_image_test:v1 python3 api.py -mn model_name
+$ docker run -it -p 5000:5000 my_image_api:v1 python3 api.py -mn model_name
 ```
-where we subsitute `model_name` with one of the following: `isolation_forest` (unsupervised), `one-class_svm` (semi-supervised), or `random_forest` (supervised). It is also possible to train these models using additional lagged variables by specifying the `-lv` option. For instance, we run the server in order to perform inference using the trained Random Forest model with lagged variables
+where we subsitute `model_name` with one of the following: `isolation_forest` (unsupervised), `one-class_svm` (semi-supervised), or `random_forest` (supervised). We can also use the optional input argument `-lv` to specify that we want to perform inference using a model with lagged variables. For instance, we run the server in order to perform inference using the trained Random Forest model with lagged variables
 ```
 $ docker run -it -p 5000:5000 ad_image_test:v1 python3 api.py -mn random_forest -lv
 ```
+A requests for prediction can be send by running a shell script under `/requests`. The script contains a curl command that queries the service using a new example (in JSON format) to be predicted. For example
+
+```
+$ requests/request_lag_models.sh
+```
+or    
+```
+$ requests/request.sh
+```
+for a model without lagged variables. The API should output the model's prediction, 0 - Normal or 1 - Anomaly, in JSON format.
