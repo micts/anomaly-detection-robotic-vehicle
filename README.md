@@ -64,7 +64,7 @@ python main.py -h <or> --help
 Results are save under `results/`. Trained models and transformations are saved under `models/`. Finally, feature importances are plotted and saved in a pickle file under `feature_importances/`.
 
 #### Using Docker
-In order to train and evaluate the models using Docker, we build a Docker image that contains all required packages (see requirements.txt). While building the image, we run `main.py`. This ensures that 1) the models are trained and evaluated in an isolated environment (container) and 2) the results (e.g. saved models and transformations) will be available to all containers initialized from the built image. This will be useful later when we serve our models as a REST API within Docker.
+In order to train and evaluate the models using Docker, we build a Docker image that contains all required packages (see `requirements.txt`). While building the image, we run `main.py`. This ensures that 1) the models are trained and evaluated in an isolated environment (container) and 2) the results (e.g. saved models and transformations) will be available to all containers initialized from the built image. This will be useful later when we serve our models as a REST API within Docker.
 
 To train and evaluate the models using Docker, type
 ```
@@ -74,6 +74,7 @@ For example,
 ```
 $ docker build -t my_image:v1 .
 ```
+The input arguments to `main.py` can be modified in the Dockerfile.    
 
 #### Task 2
 We deploy the trained models as a REST API using Docker and Flask. First, we build a docker image from the Dockerfile using `$ docker build -t <name_for_image>:<tag> .` For example, 
