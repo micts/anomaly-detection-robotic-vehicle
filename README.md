@@ -19,7 +19,7 @@ We train the following models: Isolation Forest (unsupervised), One-Class SVM (s
 ### Feature Engineering
 We construct two new features    
 1) `Volts` = `Watts` / `Amps` in order to model the interaction between `Watts` and `Amps`. These two variables are replaced by `Volts`.
-2) `R/T(xKBTot)` = (`RxKBTot` + 1) / (`TxKBTot` + 1) to model the ratio between received and transmitted network traffic rate.
+2) `R/T(xKBTot)` = (`RxKBTot + 1`) / (`TxKBTot + 1`) to model the ratio between received and transmitted network traffic rate.
 
 ### Feature Transformation    
 All features are scaled to have zero mean and unit variance.
