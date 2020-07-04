@@ -54,7 +54,7 @@ We run `main.py` to train and evalute the models.
 ```
 python main.py -p <path_to_csv_file>
 ```
-There a few optional input arguments we can specify.     
+There are a few optional input arguments we can specify.     
 `-lv`, `--lag_variables`,  Create a lag version of two time steps for each variable.    
 `-nv`, `--no_verbose`,    No verbose does not print evaluation results.    
 `-sr`, `--save_results`,  Save results in a pickle file.     
