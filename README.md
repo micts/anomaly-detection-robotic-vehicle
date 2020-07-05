@@ -85,13 +85,13 @@ For example,
 ```
 $ docker build -t my_image:v1 .
 ```
-The input arguments to `main.py` can be modified in the Dockerfile. In order to move the results produced by `main.py` to the host (local machine), we first need to initialize a container
+The input arguments to `main.py` can be modified in the Dockerfile. 
 
+In order to move the results produced by `main.py` to the host (local machine), we first need to initialize a container
 ```
 $ docker run --name my_container my_image:v1
 ```
 Next, we copy the data we need from the container to our local machine. For example, to copy the `results/` folder
-
 ```
 $ docker cp my_container:anomaly_detection_app/results/ <path_on_host>
 ```
