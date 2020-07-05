@@ -67,7 +67,7 @@ For help, type
 python main.py -h <or> --help    
 ```   
  
-Results are save under `results/`. Trained models and transformations are saved under `models/`. Finally, feature importances are plotted and saved in a pickle file under `feature_importances/`.
+Results are save under `results/`. Trained models and transformations are saved under `models/`. Finally, feature importances as produced by the random forest model are plotted and saved in a pickle file under `feature_importances/`.
 
 #### Using Docker
 In order to train and evaluate the models using Docker, we build a Docker image that contains all required packages (see `requirements.txt`). By building the image, we run `main.py`. This ensures that 1) the models are trained and evaluated in an isolated environment (container) and 2) the results (e.g. saved models and feature transformations) will be available to all containers initialized from the built image. This will be useful later when we serve our models as a REST API within Docker.
