@@ -48,7 +48,7 @@ Clone or download this repository.
 ```
 $ git clone https://github.com/micts/anomaly-detection-robotic-vehicle.git
 ```
-Make sure to copy the file 'vulnerable_robot_challenge.csv' in repository's folder.
+Make sure to copy the file `vulnerable_robot_challenge.csv` in the folder of this repository.
 
 ### Model Training and Evaluation
 We run `main.py` to train and evalute the models. 
