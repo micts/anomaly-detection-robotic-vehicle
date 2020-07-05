@@ -48,6 +48,7 @@ Clone or download this repository.
 ```
 $ git clone https://github.com/micts/anomaly-detection-robotic-vehicle.git
 ```
+Make sure to copy the file `vulnerable_robot_challenge.csv` in the folder of this repository.
 
 ### Model Training and Evaluation
 We run `main.py` to train and evalute the models. 
@@ -84,7 +85,7 @@ The input arguments to `main.py` can be modified in the Dockerfile.
 ### REST API
 We deploy the trained models as a REST API using Docker and Flask. First, we build a docker image from the Dockerfile using `$ docker build -t <name_for_image>:<tag> .` For example, 
 ```
-$ docker build -t my_image_api:v1 .`    
+$ docker build -t my_image_api:v1 .    
 ```    
 The above command will install all required dependencies. As described above, by building the image, `main.py` will be executed in order to train and save the models. Saved models and feature transformations will be available to all containers initialized by the built image, so that we access them througth the API.  
 
