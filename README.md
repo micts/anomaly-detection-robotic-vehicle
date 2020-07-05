@@ -39,10 +39,10 @@ Training set and test set results are shown in the following tables. Results for
 ![Screenshot](table_results/test_set_results.png)
 
 ### Feature Importances
-We provide feature importances as produced by the random forest models. The constructed feature, `R/T(xKBTot)`, is considered as most important by the random forest models.
+We provide feature importances as produced by the random forest models. The constructed feature, `R/T(xKBTot)`, is considered as most important by the random forest models. The other constructed feature, `Volts` is also considered quite important.
 
 ![Screenshot](table_results/feature_importances.jpg)
-![Screenshot](table_results/feature_importances_lag2.png)
+![Screenshot](table_results/feature_importances_lag.png)
 
 ## How to Use
 
@@ -86,7 +86,7 @@ For example,
 ```
 $ docker build -t my_image:v1 .
 ```
-The input arguments to `main.py` can be modified in the Dockerfile.    
+The input arguments to `main.py` can be modified in the Dockerfile.
 
 ### REST API
 We deploy the trained models as a REST API using Docker and Flask. First, we build a docker image from the Dockerfile using `$ docker build -t <name_for_image>:<tag> .` For example, 
