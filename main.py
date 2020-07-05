@@ -34,7 +34,6 @@ if is_lag:
 else:
     features = np.r_[1, 2, 3, 4, 7, 8, 10, 11]
 
-print(data.columns[features])
 x_train, x_test, y_train, y_test = train_test_split(data.iloc[:, features],
                                                     data.iloc[:, 9],
                                                     test_size=0.33,
