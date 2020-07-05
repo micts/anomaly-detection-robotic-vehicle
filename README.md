@@ -39,10 +39,10 @@ Training set and test set results are shown in the following tables. Results for
 ![Screenshot](table_results/test_set_results.png)
 
 ### Feature Importances
-We provide feature importances as produced by the random forest models.
+We provide feature importances as produced by the random forest models. The constructed feature, `R/T(xKBTot)`, is considered as most important by the random forest models.
 
-![Screenshot](feature_importances/feature_importances.jpg)
-![Screenshot](feature_importances/feature_importances_lag2.png)
+![Screenshot](table_results/feature_importances.jpg)
+![Screenshot](table_results/feature_importances_lag2.png)
 
 ## How to Use
 
