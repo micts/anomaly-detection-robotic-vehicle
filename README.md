@@ -49,12 +49,11 @@ We provide feature importances as produced by the random forest models. The cons
 ### Requirements   
 `Python 3.x`. For packages, see `requirements.txt`.
 
-
 Clone or download this repository.
 ```
 $ git clone https://github.com/micts/anomaly-detection-robotic-vehicle.git
 ```
-Make sure to copy the file `vulnerable_robot_challenge.csv` in the folder of this repository.
+Make sure to copy the dataset file, `vulnerable_robot_challenge.csv`, in the folder of this repository.
 
 ### Model Training and Evaluation
 We run `main.py` to train and evalute the models. 
@@ -72,8 +71,8 @@ For help, type
 ```
 python main.py -h <or> --help    
 ```   
- 
-Results are save under `results/`. Trained models and transformations are saved under `models/`. Finally, feature importances as produced by the random forest model are plotted and saved in a pickle file under `feature_importances/`.
+
+Results are saved under `results/`. Trained models and transformations are saved under `models/`. Finally, feature importances as produced by the random forest model are saved under `feature_importances/`.
 
 #### Using Docker
 In order to train and evaluate the models using Docker, we build a Docker image that contains all required packages (see `requirements.txt`). By building the image, we run `main.py`. This ensures that 1) the models are trained and evaluated in an isolated environment (container) and 2) the results (e.g. saved models and feature transformations) will be available to all containers initialized from the built image. This will be useful later when we serve our models as a REST API within Docker.
@@ -86,7 +85,16 @@ For example,
 ```
 $ docker build -t my_image:v1 .
 ```
-The input arguments to `main.py` can be modified in the Dockerfile.
+The input arguments to `main.py` can be modified in the Dockerfile. In order to move the results produced by `main.py` to the host (local machine), we first need to initialize a container
+
+```
+$ docker run --name my_container my_image:v1
+```
+Next, we copy the data we need from the container to our local machine. For example, to copy the `results/` folder
+
+```
+$ docker cp my_container:anomaly_detection_app/results/ <path_on_host>
+```
 
 ### REST API
 We deploy the trained models as a REST API using Docker and Flask. First, we build a docker image from the Dockerfile using `$ docker build -t <name_for_image>:<tag> .` For example, 
