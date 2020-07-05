@@ -12,11 +12,6 @@ def relabel_pred(pred):
     Re-label predictions to be compatible with flag (target).
     1 --> 0
     -1 --> 1
-
-    # Parameters
-    # ----------
-    # pred : 1d numpy array
-    #     Predictions in {1, -1}
     """
     return ((-0.5) * (pred - 1)).astype(np.int)
 
@@ -179,17 +174,3 @@ def print_results(results):
             print('', name, 10 * '-', sep='\n')
             for metric, value in results[split][name].items():
                 print(metric, round(value, 3))
-
-# def print_results(models, eval_metrics, split='train'):
-#
-#     print()
-#     if split == 'train':
-#         print('', 'Training Set', 12 * '-', sep='\n')
-#     else:
-#         print('', 'Test Set', 8 * '-', sep='\n')
-#     for name, _ in models:
-#         print('', name, 10 * '-', sep='\n')
-#         print('Recall:', round(eval_metrics[name][0][0], 3))
-#         print('Precision:', round(eval_metrics[name][0][1], 3))
-#         print('Area Under ROC (AUROC):', round(eval_metrics[name][0][2], 3))
-#         print('Area Under PRC (Average Precision)', round(eval_metrics[name][0][3], 3))
