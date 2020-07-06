@@ -14,7 +14,7 @@ Although it is an unsupervised classification task, it is possible to approach i
 We train the following models: Isolation Forest (unsupervised), One-Class SVM (semi-supervised), and Random Forest (supervised). Additionally, we employ two variants of these models.    
 
 1) Using only time step `t` for each variable, i.e. no temporal information. For example, using variables `X1(t)`, `X2(t)`.
-2) Using information from previous steps by constructing lagged versions for each variable for two time steps. For example, `X1(t)`, `X1(t-1)`, `X1(t-2)`, `X2(t)`, `X2(t-1)`, `X2(t-2)`
+2) Using information from previous steps by constructing lagged versions for each variable for two time steps. For example, `X1(t)`, `X1(t-1)`, `X1(t-2)`, `X2(t)`, `X2(t-1)`, `X2(t-2)`.
 
 ### Feature Engineering
 We construct two new features    
