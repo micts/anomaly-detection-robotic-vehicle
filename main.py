@@ -139,8 +139,10 @@ if is_verbose:
     time.sleep(1)
     utils.print_results(results)
 
-if feature_importances and is_verbose:
-    print('\n\n')
-    print('Ordered feature importances (Random Forest)', 8 * '-', sep='\n')
-    utils.print_feature_importances(f_fi)
+if feature_importances:
     utils.save_feature_importances(f_fi, is_lag)
+    if is_verbose:
+        print('\n\n')
+        print('Ordered feature importances (Random Forest)', 8 * '-', sep='\n')
+        utils.print_feature_importances(f_fi)
+    
